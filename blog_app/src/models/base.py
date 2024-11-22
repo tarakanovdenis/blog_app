@@ -46,8 +46,8 @@ class Base(AsyncAttrs, DeclarativeBase):
     )
     created_at: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True),
-        server_default=text("TIMEZONE('utc', now()"),
-        onupdate=text("TIMEZONE('utc', now()"),
+        server_default=text("TIMEZONE('utc', now())"),
+        onupdate=text("TIMEZONE('utc', now())"),
     )
 
     repr_column_number = 1

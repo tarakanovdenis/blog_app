@@ -9,7 +9,7 @@ class Post(Base):
 
     title: Mapped[uniq_str_128]
     descriptin: Mapped[str_512]
-    likes: Mapped[int] = mapped_column(Integer, server_default=0)
+    likes: Mapped[int] = mapped_column(Integer, server_default="0")
 
     repr_columns = (
         "id",
