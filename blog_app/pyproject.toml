@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "blog-app"
+version = "0.1.0"
+description = ""
+authors = ["Denis Tarakanov <tarakov021098@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+uvicorn = {extras = ["standard"], version = "^0.32.1"}
+black = "^24.10.0"
+pydantic-settings = "^2.6.1"
+asyncpg = "^0.30.0"
+sqlalchemy = "^2.0.36"
+alembic = "^1.14.0"
+
+[tool.poetry.group.dev.dependencies]
+fastapi = "^0.115.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
