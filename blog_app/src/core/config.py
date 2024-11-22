@@ -29,7 +29,7 @@ class EnvSettings(BaseSettings):
 
 class DatabaseSettings(EnvSettings):
     postgres_user: str = Field(default="app")
-    postgres_password: str = Field(default="qwe123")
+    postgres_password: str = Field(default="123qwe")
     postgres_db: str = Field(default="blog_api_database")
     postgres_host: str = Field(default="blog_api_db")
     postgres_port: int = Field(default=5432)

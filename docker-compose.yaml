@@ -1,0 +1,53 @@
+services:
+  blog_api_backend:
+    container_name: blog_api_backend
+    hostname: blog_api_backend
+    build:
+      context: ./blog_app/
+    env_file:
+      - ./blog_app/.env
+    volumes:
+      - ./blog_app/:/opt/app/
+    ports:
+      - "8000:8000"
+    networks:
+      - appnet
+    depends_on:
+      blog_api_db:
+        condition: service_healthy
+
+  blog_api_db:
+    container_name: blog_api_db
+    hostname: blog_api_db
+    image: postgres:15.7
+    env_file:
+      - ./blog_app/.env
+    volumes:
+      - $HOME/blog_api_db/data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - appnet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    restart: on-failure
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    ports:
+      - "82:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=app@mail.com
+      - PGADMIN_DEFAULT_PASSWORD=123qwe
+    networks:
+      - appnet
+
+
+networks:
+  appnet:
+    driver: bridge
+    name: appnet
