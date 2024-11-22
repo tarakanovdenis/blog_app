@@ -1,0 +1,16 @@
+# Ignore virtual environment
+venv/
+.venv/
+
+# Ignore environment variable file
+env
+.env
+
+# Ignore Python cache files
+__pycache__/
+*.py[cdo]
+
+# Ignore logs and temporal files
+*.log
+*.temp
+*.tmp
