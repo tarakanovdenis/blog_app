@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import (
     AsyncSession,
 )
 
+from src.models.base import Base
 from src.core.config import settings
 
 
@@ -35,6 +36,14 @@ class DatabaseHelper:
                 raise
             finally:
                 await session.close()
+
+    async def create_database_tables(self) -> None:
+        async with self.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.create_all)
+
+    async def purge_database_tables(self) -> None:
+        async with self.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.drop_all)
 
 
 db_helper = DatabaseHelper(
