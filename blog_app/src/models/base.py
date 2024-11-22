@@ -1,7 +1,7 @@
 from typing import Annotated, Any
 from uuid import uuid4
 
-from sqlalchemy import MetaData, DateTime, text
+from sqlalchemy import MetaData, DateTime, text, String
 from sqlalchemy.orm import (
     DeclarativeBase,
     Mapped,
@@ -14,7 +14,12 @@ from sqlalchemy.dialects.postgresql import UUID
 from src.core.config import settings
 
 
-uniq_str = Annotated[str, mapped_column(unique=True, nullable=False)]
+uniq_str_128 = Annotated[
+    str, mapped_column(String(128), unique=True, nullable=False)
+]
+str_512 = Annotated[
+    str, mapped_column(String(512), nullable=False)
+]
 
 
 class Base(AsyncAttrs, DeclarativeBase):
