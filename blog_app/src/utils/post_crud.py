@@ -79,3 +79,13 @@ async def delete_post_by_id(
     post: Post = await get_post_by_id_or_404(post_id, session)
     await session.delete(post)
     await session.commit()
+
+
+async def like_post_by_id(
+    post_id: UUID,
+    session: AsyncSession,
+):
+    post: Post = await get_post_by_id_or_404(post_id, session)
+    post.like_number += 1
+    await session.commit()
+    return post

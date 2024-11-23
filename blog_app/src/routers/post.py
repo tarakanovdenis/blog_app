@@ -156,3 +156,27 @@ async def delete_post(
         post_id,
         session,
     )
+
+
+@router.post(
+    "/{post_id}/like",
+    status_code=status.HTTP_201_CREATED,
+    response_model=PostRead,
+)
+async def like_post(
+    post_id: Annotated[UUID, Path(description="Post ID (UUID4)")],
+    session: AsyncSession = Depends(db_helper.get_session),
+):
+    """
+    Add like to the post using post ID
+
+    Parameters:
+    **post_id** (UUID): post ID (UUID4)
+
+    Return value:
+    **post** (PostRead): post
+    """
+    return await post_crud.like_post_by_id(
+        post_id,
+        session
+    )
