@@ -237,7 +237,45 @@ async def test_delete_post(
     post_id = body["id"]
 
     *_, status = await make_delete_request(
-        test_settings.blog_api_backend_url + f"/posts/{post_id}",
+        test_settings.blog_api_backend_url + f"/posts/{post_id}/",
     )
 
     assert status == expected_answer["status"]
+
+
+@pytest.mark.parametrize(
+    "expected_answer",
+    [
+        (
+            {
+                "status": HTTPStatus.CREATED,
+                "likes_number": 5,
+            }
+        )
+    ]
+)
+@pytest.mark.asyncio
+async def test_like_post(
+    make_post_request,
+    expected_answer,
+):
+    """Test the adding like to the post."""
+    post_data = {
+        "title": "My opinion about the film Schindler's List",
+        "body": "Here it can be found a detailed description.",
+    }
+
+    body, *_ = await make_post_request(
+            test_settings.blog_api_backend_url + "/posts/",
+            json=post_data,
+        )
+
+    post_id = body["id"]
+
+    for _ in range(5):
+        body, _, status = await make_post_request(
+            test_settings.blog_api_backend_url + f"/posts/{post_id}/like/",
+        )
+
+    assert status == expected_answer["status"]
+    assert body["likes_number"] == expected_answer["likes_number"]
