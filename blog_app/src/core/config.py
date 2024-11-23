@@ -51,7 +51,7 @@ class DatabaseSettings(EnvSettings):
             f":{self.postgres_port}/{self.postgres_db}"
         )
 
-    db_echo: bool = True
+    db_echo: bool = Field(default=True)
 
 
 class Settings(BaseSettings):

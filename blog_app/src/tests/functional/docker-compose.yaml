@@ -1,0 +1,55 @@
+services:
+  blog_api_backend_for_test:
+    container_name: blog_api_backend_for_test
+    build:
+     context: ../../../.
+    image: blog_api_backend_for_test
+    env_file:
+      - ./.env
+    volumes:
+      - ../../../.:/opt/app
+    entrypoint: sh -c "python -m main"
+    depends_on:
+      blog_api_db_for_test:
+        condition: service_healthy
+    ports:
+      - "8001:8000"
+    networks:
+      - appnet
+
+  tests:
+    container_name: tests
+    image: blog_api_backend_for_test
+    env_file:
+      - ./.env
+    depends_on:
+      - blog_api_backend_for_test
+    volumes:
+      - ../../../.:/opt/app
+    entrypoint: >
+      sh -c "pip install -r ./src/tests/functional/requirements.txt
+      && python -m pytest -vv ./src/tests/functional/src"
+    networks:
+      - appnet
+
+  blog_api_db_for_test:
+    container_name: blog_api_db_for_test
+    hostname: blog_api_db_for_test
+    image: postgres:15.7
+    env_file:
+      - ./.env
+    ports:
+      - "5433:5432"
+    networks:
+      - appnet
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+    restart: on-failure
+
+
+networks:
+  appnet:
+    driver: bridge

@@ -8,6 +8,9 @@ services:
       - ./blog_app/.env
     volumes:
       - ./blog_app/:/opt/app/
+    entrypoint: >
+      sh -c "chmod +x ./run_blog_app.sh
+      && bash ./run_blog_app.sh"
     ports:
       - "8000:8000"
     networks:

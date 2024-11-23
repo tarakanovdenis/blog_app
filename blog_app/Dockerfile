@@ -12,12 +12,10 @@ WORKDIR /opt/app
 
 COPY . .
 
+EXPOSE 8000
+
 RUN pip install -U pip setuptools \
     && pip install poetry
 
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-root
-
-EXPOSE 8000
-
-ENTRYPOINT [ "python", "-m", "main" ]
