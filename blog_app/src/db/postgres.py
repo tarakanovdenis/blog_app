@@ -15,8 +15,8 @@ class DatabaseHelper:
         self.echo = echo
 
         self.engine = create_async_engine(
-            self.url,
-            self.echo,
+            url=self.url,
+            echo=self.echo,
         )
 
         self.async_session = async_sessionmaker(

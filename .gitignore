@@ -11,6 +11,6 @@ __pycache__/
 *.py[cdo]
 
 # Ignore logs and temporal files
-*.log
+*.log*
 *.temp
 *.tmp

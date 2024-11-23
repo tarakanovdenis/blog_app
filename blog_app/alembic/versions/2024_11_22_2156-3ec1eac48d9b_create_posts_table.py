@@ -1,8 +1,8 @@
 """create posts table
 
-Revision ID: 29eca6758319
+Revision ID: 3ec1eac48d9b
 Revises:
-Create Date: 2024-11-22 20:05:04.147031
+Create Date: 2024-11-22 21:56:06.863806
 
 """
 
@@ -13,7 +13,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = "29eca6758319"
+revision: str = "3ec1eac48d9b"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -25,20 +25,10 @@ def upgrade() -> None:
         "posts",
         sa.Column("id", sa.UUID(), nullable=False),
         sa.Column("title", sa.String(length=128), nullable=False),
-        sa.Column("descriptin", sa.String(length=512), nullable=False),
+        sa.Column("body", sa.String(length=512), nullable=False),
         sa.Column("likes", sa.Integer(), server_default="0", nullable=False),
-        sa.Column(
-            "updated_at",
-            sa.DateTime(timezone=True),
-            server_default=sa.text("TIMEZONE('utc', now())"),
-            nullable=False,
-        ),
-        sa.Column(
-            "created_at",
-            sa.DateTime(timezone=True),
-            server_default=sa.text("TIMEZONE('utc', now())"),
-            nullable=False,
-        ),
+        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False),
+        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_posts")),
         sa.UniqueConstraint("id", name=op.f("uq_posts_id")),
         sa.UniqueConstraint("title", name=op.f("uq_posts_title")),

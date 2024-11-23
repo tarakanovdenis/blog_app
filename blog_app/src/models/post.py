@@ -8,12 +8,13 @@ class Post(Base):
     __tablename__ = "posts"
 
     title: Mapped[uniq_str_128]
-    descriptin: Mapped[str_512]
+    body: Mapped[str_512]
     likes: Mapped[int] = mapped_column(Integer, server_default="0")
 
     repr_columns = (
         "id",
         "title",
-        "description",
+        "body",
+        "likes",
         "created_at",
     )

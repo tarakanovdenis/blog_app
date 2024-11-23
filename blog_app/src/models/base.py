@@ -1,5 +1,6 @@
 from typing import Annotated, Any
 from uuid import uuid4
+from datetime import datetime, timezone
 
 from sqlalchemy import MetaData, DateTime, text, String
 from sqlalchemy.orm import (
@@ -42,12 +43,12 @@ class Base(AsyncAttrs, DeclarativeBase):
     )
     updated_at: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True),
-        server_default=text("TIMEZONE('utc', now())")
+        default=lambda: datetime.now(timezone.utc),
+        onupdate=lambda: datetime.now(timezone.utc),
     )
     created_at: Mapped[DateTime] = mapped_column(
         DateTime(timezone=True),
-        server_default=text("TIMEZONE('utc', now())"),
-        onupdate=text("TIMEZONE('utc', now())"),
+        default=lambda: datetime.now(timezone.utc),
     )
 
     repr_column_number = 1
