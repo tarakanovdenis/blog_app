@@ -16,7 +16,7 @@ class Post(Base):
 
     title: Mapped[str_128]
     body: Mapped[str_512]
-    like_number: Mapped[int] = mapped_column(Integer, server_default="0")
+    likes_number: Mapped[int] = mapped_column(Integer, server_default="0")
 
     likes: Mapped[list[Like]] = relationship(
         "Like",

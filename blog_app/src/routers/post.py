@@ -13,8 +13,8 @@ from src.db.postgres import db_helper
 from src.utils import post_crud
 
 
-from sqlalchemy.ext.asyncio import AsyncSession
-# if TYPE_CHECKING:
+if TYPE_CHECKING:
+    from sqlalchemy.ext.asyncio import AsyncSession
 
 
 router = APIRouter()

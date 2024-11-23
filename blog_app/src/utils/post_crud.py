@@ -1,6 +1,5 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
-from uuid import UUID
 
 from fastapi import HTTPException, status
 from sqlalchemy import select, Result
@@ -12,6 +11,7 @@ from src.utils.messages import messages
 
 
 if TYPE_CHECKING:
+    from uuid import UUID
     from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -85,9 +85,9 @@ async def delete_post_by_id(
 async def like_post_by_id(
     post_id: UUID,
     session: AsyncSession,
-):
+) -> Post | None:
     post: Post = await get_post_by_id_or_404(post_id, session)
-    post.like_number += 1
+    post.likes_number += 1
 
     like: Like = Like(post_id=post.id)
     session.add(like)

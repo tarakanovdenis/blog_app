@@ -39,7 +39,7 @@ def upgrade() -> None:
     op.add_column(
         "posts",
         sa.Column(
-            "like_number", sa.Integer(), server_default="0", nullable=False
+            "likes_number", sa.Integer(), server_default="0", nullable=False
         ),
     )
     op.drop_constraint("uq_posts_title", "posts", type_="unique")

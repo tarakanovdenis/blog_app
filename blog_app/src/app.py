@@ -2,6 +2,7 @@ from fastapi import FastAPI
 
 from src.core.config import settings
 from src.routers.post import router as post_router
+from src.routers.like import router as like_router
 
 
 app = FastAPI(
@@ -15,4 +16,9 @@ app.include_router(
     post_router,
     prefix="/posts",
     tags=["Post Management Endpoints"],
+)
+app.include_router(
+    like_router,
+    prefix="/likes",
+    tags=["Like Management Endpoints"],
 )
