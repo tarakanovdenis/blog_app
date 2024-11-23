@@ -10,8 +10,8 @@ from src.models.post import Post
 from src.utils.messages import messages
 
 
-from sqlalchemy.ext.asyncio import AsyncSession
-# if TYPE_CHECKING:
+if TYPE_CHECKING:
+    from sqlalchemy.ext.asyncio import AsyncSession
 
 
 async def create_post(
