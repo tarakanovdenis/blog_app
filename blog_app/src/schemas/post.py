@@ -23,7 +23,7 @@ class PostCreate(PostBase):
 
 class PostRead(PostBase):
     id: UUID
-    likes: int
+    like_number: int
     updated_at: datetime
     created_at: datetime
 
