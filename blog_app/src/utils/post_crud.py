@@ -7,6 +7,7 @@ from sqlalchemy import select, Result
 
 from src.schemas.post import PostCreate, PostUpdate
 from src.models.post import Post
+from src.models.like import Like
 from src.utils.messages import messages
 
 
@@ -87,5 +88,8 @@ async def like_post_by_id(
 ):
     post: Post = await get_post_by_id_or_404(post_id, session)
     post.like_number += 1
+
+    like: Like = Like(post_id=post.id)
+    session.add(like)
     await session.commit()
     return post
