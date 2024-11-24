@@ -21,6 +21,8 @@ class Post(Base):
     likes: Mapped[list[Like]] = relationship(
         "Like",
         back_populates="post",
+        cascade="delete, delete-orphan",
+        passive_deletes=True,
     )
 
     repr_columns = (

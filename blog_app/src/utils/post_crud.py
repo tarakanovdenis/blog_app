@@ -1,13 +1,8 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
 
-from fastapi import HTTPException, status
-from sqlalchemy import select, Result
-
 from src.schemas.post import PostCreate, PostUpdate
 from src.models.post import Post
-from src.models.like import Like
-from src.utils.messages import messages
 from src.dao.dao import PostDAO
 
 
@@ -20,46 +15,18 @@ async def create_post(
     post_create: PostCreate,
     session: AsyncSession,
 ) -> Post | None:
-    post: Post = Post(**post_create.model_dump())
-
-    session.add(post)
-    await session.commit()
-    await session.refresh(post)
-    return post
+    return await PostDAO.create(post_create, session)
 
 
 async def get_posts_or_404(session: AsyncSession) -> list[Post] | None:
-    return await PostDAO.get_all(session)
-    # stmt = select(Post)
-    # result: Result = await session.execute(stmt)
-    # posts = result.scalars().all()
-
-    # if not posts:
-    #     raise HTTPException(
-    #         status_code=status.HTTP_404_NOT_FOUND,
-    #         detail=messages.POSTS_WERE_NOT_FOUND,
-    #     )
-
-    # return posts
+    return await PostDAO.get_all_or_404(session)
 
 
 async def get_post_by_id_or_404(
     post_id: UUID,
     session: AsyncSession,
 ) -> Post | None:
-    stmt = select(Post).where(
-        Post.id == post_id,
-    )
-    result: Result = await session.execute(stmt)
-    post = result.scalar_one_or_none()
-
-    if not post:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=messages.POST_WITH_THAT_ID_WAS_NOT_FOUND,
-        )
-
-    return post
+    return await PostDAO.get_one_by_id_or_404(post_id, session)
 
 
 async def update_post(
@@ -68,30 +35,18 @@ async def update_post(
     session: AsyncSession,
     partially: bool = False,
 ) -> Post | None:
-    post: Post = await get_post_by_id_or_404(post_id, session)
-    for name, value in post_update.model_dump(exclude_unset=partially).items():
-        setattr(post, name, value)
-    await session.commit()
-    return post
+    return await PostDAO.update_by_id(post_id, post_update, session, partially)
 
 
 async def delete_post_by_id(
     post_id: UUID,
     session: AsyncSession,
 ):
-    post: Post = await get_post_by_id_or_404(post_id, session)
-    await session.delete(post)
-    await session.commit()
+    return await PostDAO.delete_by_id(post_id, session)
 
 
 async def like_post_by_id(
     post_id: UUID,
     session: AsyncSession,
 ) -> Post | None:
-    post: Post = await get_post_by_id_or_404(post_id, session)
-    post.likes_number += 1
-
-    like: Like = Like(post_id=post.id)
-    session.add(like)
-    await session.commit()
-    return post
+    return await PostDAO.like_post_by_id(post_id, session)
