@@ -38,16 +38,16 @@ services:
       retries: 3
     restart: on-failure
 
-  # pgadmin:
-  #   container_name: pgadmin
-  #   image: dpage/pgadmin4
-  #   ports:
-  #     - "82:80"
-  #   environment:
-  #     - PGADMIN_DEFAULT_EMAIL=app@mail.com
-  #     - PGADMIN_DEFAULT_PASSWORD=123qwe
-  #   networks:
-  #     - appnet
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    ports:
+      - "82:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=app@mail.com
+      - PGADMIN_DEFAULT_PASSWORD=123qwe
+    networks:
+      - appnet
 
 
 networks:
