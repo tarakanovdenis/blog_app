@@ -1,11 +1,30 @@
 from pathlib import Path
+import json
 
+from loguru import logger
 from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 BASE_DIR = Path(__file__).parent.parent.parent
 ENV_FILE_PATH = BASE_DIR / ".env"
+
+logger.remove()
+logger.add(
+    BASE_DIR / "logs" / "loguru_access.log",
+    level="INFO",
+    rotation="100 MB",
+)
+logger.add(
+    BASE_DIR / "logs" / "loguru_error.log",
+    level="ERROR",
+    rotation="300 MB",
+)
+
+log_config_file = str(BASE_DIR) + "/logs/config.json"
+
+with open(log_config_file, "r") as config:
+    log_config = json.load(config)
 
 
 class ProjectSettings(BaseModel):

@@ -1,14 +1,6 @@
-import json
-
 import uvicorn
 
-from src.core.config import BASE_DIR
-
-
-log_config_file = str(BASE_DIR) + "/logs/config.json"
-
-with open(log_config_file, "r") as config:
-    log_config = json.load(config)
+from src.core.config import log_config
 
 
 if __name__ == "__main__":
@@ -18,5 +10,5 @@ if __name__ == "__main__":
         port=8000,
         workers=4,
         log_config=log_config,
-        reload=True
+        reload=True,
     )

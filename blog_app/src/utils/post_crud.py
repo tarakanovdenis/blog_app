@@ -8,6 +8,7 @@ from src.schemas.post import PostCreate, PostUpdate
 from src.models.post import Post
 from src.models.like import Like
 from src.utils.messages import messages
+from src.dao.dao import PostDAO
 
 
 if TYPE_CHECKING:
@@ -28,17 +29,18 @@ async def create_post(
 
 
 async def get_posts_or_404(session: AsyncSession) -> list[Post] | None:
-    stmt = select(Post)
-    result: Result = await session.execute(stmt)
-    posts = result.scalars().all()
+    return await PostDAO.get_all(session)
+    # stmt = select(Post)
+    # result: Result = await session.execute(stmt)
+    # posts = result.scalars().all()
 
-    if not posts:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=messages.POSTS_WERE_NOT_FOUND,
-        )
+    # if not posts:
+    #     raise HTTPException(
+    #         status_code=status.HTTP_404_NOT_FOUND,
+    #         detail=messages.POSTS_WERE_NOT_FOUND,
+    #     )
 
-    return posts
+    # return posts
 
 
 async def get_post_by_id_or_404(
